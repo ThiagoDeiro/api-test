@@ -1,10 +1,10 @@
 import React from 'react'
 import Axios from 'axios'
-
+import Cuisine from './Cuisine'
 export default class ZoomatoApi extends React.Component{
     state = {
         cityData: [],
-        searchInput: " "
+        searchInput: " ",
     }
 
   searchHandler = (event) => {
@@ -24,7 +24,7 @@ export default class ZoomatoApi extends React.Component{
             }
           })
             .then(response => {
-                const cityData = response.data;
+                const cityData = response.data.restaurants;
                 this.setState({cityData})
                 console.log(cityData)
             })
@@ -32,24 +32,28 @@ export default class ZoomatoApi extends React.Component{
               console.log(error);
             });
     }
-
-   
-  
-
- 
+    
     render(){
-            const restaurentResult = this.state.cityData;
-            console.log(restaurentResult)
-            // const name = restaurentResult.map((e,id) => <li key={id}>{e.name}</li>)
+
+        const dataAPI = this.state.cityData
+        const getResp = dataAPI.map(e => {
+            return e.restaurant
+        })
+
+    const getName = getResp.map((j,id) => <li key={id}>{j.name}</li>)
+          
         return(
             <div>
-                <p>hello again</p>
+                <h1>Welcome, User</h1>
+                <p>What do you feel like ?</p>
                 <input type='text' onChange={this.searchHandler}/>
-                <button onClick={this.handleChange}>Submit</button>
+                <button onClick={this.handleChange}>Confirm</button>
                 <ul>
-                
+                    {getName}
                 </ul>
+                <Cuisine />
             </div>
+            
         )
     }
 }
